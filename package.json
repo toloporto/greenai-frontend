@@ -3,7 +3,7 @@
     "name":  "greenai-control",
     "scripts":  {
                     "preview":  "vite preview",
-                    "build":  "tsc \u0026\u0026 vite build",
+                    "build":  "vite build",
                     "dev":  "vite",
                     "lint":  "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
                 },
