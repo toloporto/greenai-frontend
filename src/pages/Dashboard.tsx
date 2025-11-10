@@ -1,3 +1,6 @@
+cd C:\temp-frontend
+
+# REEMPLAZA TODO EL ARCHIVO
 @'
 import { useState, useEffect } from "react";
 import ProfitChart from "../components/ProfitChart";
@@ -23,7 +26,7 @@ export default function Dashboard() {
       const data = await res.json();
       setZones(data);
     } catch (e) {
-      console.error("Error cargando zonas:", e);
+      console.error("Error:", e);
     } finally {
       setLoading(false);
     }
@@ -40,7 +43,7 @@ export default function Dashboard() {
         body: JSON.stringify({ name: name.trim() })
       });
       await loadZones();
-      alert(`Zona "${name}" añadida con éxito!`);
+      alert(`Zona "${name}" añadida!`);
     } catch (e) {
       alert("Error: " + (e as Error).message);
     }
@@ -51,50 +54,57 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 p-6">
       <div className="max-w-6xl mx-auto">
-        {/* HEADER */}
-        <header className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-green-800 mb-2">
+        <header className="text-center mb-10">
+          <h1 className="text-5xl font-bold text-green-800 mb-2">
             GreenAI Control
           </h1>
           <p className="text-green-600 text-lg">Gestión Inteligente de Invernaderos</p>
         </header>
 
-        {/* ZONAS */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 mb-8">
+        {/* ZONAS + BOTÓN */}
+        <div className="bg-white rounded-2xl shadow-2xl p-8 mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-            <h2 className="text-2xl font-semibold text-gray-800">Zonas Activas</h2>
+            <h2 className="text-3xl font-bold text-gray-800">Zonas Activas</h2>
+            
+            {/* ESTE ES TU NUEVO BOTÓN */}
             <button
               onClick={addZone}
-              className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition transform hover:scale-105 flex items-center gap-2 shadow-md"
+              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-4 px-8 rounded-full transition-all transform hover:scale-110 hover:shadow-2xl flex items-center gap-3 text-lg"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              Añadir Zona
+              AÑADIR ZONA
             </button>
           </div>
 
           {loading ? (
-            <p className="text-center text-gray-500 py-8">Cargando zonas...</p>
-          ) : zones.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 italic text-lg">No hay zonas registradas</p>
-              <p className="text-sm text-gray-400 mt-2">Haz clic en "Añadir Zona" para comenzar</p>
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-green-500 border-t-transparent"></div>
+            </div>
+          ) : zones.length === 0 ? (
+            <div className="text-center py-16 bg-gray-50 rounded-xl">
+              <p className="text-gray-500 text-xl italic">No hay zonas registradas</p>
+              <p className="text-gray-400 mt-2">Haz clic en "AÑADIR ZONA" para comenzar</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {zones.map((zone) => (
                 <div
                   key={zone.id}
-                  className="border border-green-200 rounded-xl p-5 bg-gradient-to-br from-green-50 to-emerald-50 hover:shadow-lg transition"
+                  className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-6 hover:shadow-xl transition-all transform hover:-translate-y-1"
                 >
-                  <h3 className="font-bold text-lg text-green-800 mb-2">{zone.name}</h3>
-                  <div className="text-sm text-gray-600 space-y-1">
-                    <p>Área: <span className="font-medium">{zone.area} m²</span></p>
-                    <p>Cubierta: <span className="font-medium">{zone.cover}</span></p>
-                    <p className="text-xs text-gray-500 mt-3">
+                  <h3 className="font-bold text-xl text-green-800 mb-3">{zone.name}</h3>
+                  <div className="space-y-2 text-sm">
+                    <p className="text-gray-700">
+                      <span className="font-semibold">Área:</span> {zone.area} m²
+                    </p>
+                    <p className="text-gray-700">
+                      <span className="font-semibold">Cubierta:</span> {zone.cover}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-4">
                       {new Date(zone.created_at).toLocaleString("es-ES")}
                     </p>
                   </div>
@@ -104,18 +114,19 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* GRÁFICO (TU COMPONENTE) */}
-        <div className="bg-white rounded-2xl shadow-xl p-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Rendimiento</h2>
-          <ProfitChart />
+        {/* GRÁFICO */}
+        <div className="bg-white rounded-2xl shadow-2xl p-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Rendimiento</h2>
+          <div className="h-80">
+            <ProfitChart />
+          </div>
         </div>
 
-        {/* FOOTER */}
         <footer className="text-center mt-12 text-sm text-gray-500">
           <p>Backend: Railway + PostgreSQL</p>
           <p>Frontend: Vercel + Tailwind</p>
           <p className="mt-2">
-            API: <a href={API_URL} target="_blank" className="text-green-600 underline hover:text-green-700">{API_URL}</a>
+            API: <a href={API_URL} target="_blank" className="text-green-600 underline">{API_URL}</a>
           </p>
         </footer>
       </div>
@@ -124,4 +135,4 @@ export default function Dashboard() {
 }
 '@ | Out-File -FilePath "src/pages/Dashboard.tsx" -Encoding UTF8 -Force
 
-Write-Host "Dashboard.tsx ACTUALIZADO con BOTÓN FUNCIONAL!" -ForegroundColor Green
+Write-Host "DASHBOARD 100% ACTUALIZADO CON BOTÓN VERDE!" -ForegroundColor Green
